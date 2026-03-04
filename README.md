@@ -1,3 +1,15 @@
+# Bayesian Predictive Potentials for Inference-Time Alignment of Flow Matching and Diffusion Models
+
+## Abstract
+
+Inference-time reward alignment for flow matching and diffusion models is often framed as sampling from an exponentially tilted target distribution. Feynman--Kac (FK) steering approximates this objective using an interacting particle system that resamples trajectories via intermediate *potentials*. In practice, most formulations rely on *intermediate rewards* (e.g., scoring partially denoised states) and can suffer from weight degeneracy under exponential reweighting. In addition, these approaches can be limited when rewards are only available at the terminal state and are costly to evaluate (e.g., docking or simulators).
+We propose *Bayesian Predictive Potentials* (BPP), which use a Bayesian predictor to estimate terminal reward from intermediate prefix states and thereby construct FK potentials, without any intermediate reward evaluations.
+Experiments on toy problems and pretrained TABASCO models for molecular generation show promising empirical results.
+
+---
+
+Modifying from TABASCO, original readme:
+
 <div align="center">
 
 
@@ -71,6 +83,7 @@ torchrun --nproc_per_node=2 --nnodes=1 src/train.py experiment=hot_geom trainer=
 
 ### Sampling
 We provide two scripts for sampling from a model checkpoint, as well as some convenient parameters to modify. Unconditional sampling is called with:
+
 ```python
 python src/sample.py \
     --num_mols 1000 --num_steps 100 \
@@ -100,12 +113,11 @@ The model uses a deliberately simplified non-equivariant Transformer that treats
 
 We combine the required interpolant functionality in one base `Interpolant` class to make the code more readable and extensible. In practice, we found that this significantly increases iteration speed and improves verifiability. The `SDEMetricInterpolant` manages coordinate flows with configurable noise scaling and centering, while `DiscreteInterpolant` handles categorical atom types in the discrete diffusion framework. Each interpolant defines four key operations: noise sampling, path creation between data points, loss computation, and explicit-Euler stepping during generation. This modular design allows mixing different interpolation strategies for different molecular properties while maintaining a unified training loop.
 
-
 ## Citation
 
 ```
 @article{vonessen2025tabasco,
-      title={TABASCO: A Fast, Simplified Model for Molecular Generation with Improved Physical Quality}, 
+      title={TABASCO: A Fast, Simplified Model for Molecular Generation with Improved Physical Quality},
       author={Carlos Vonessen and Charles Harris and Miruna Cretu and Pietro Liò},
       year={2025},
       url={https://arxiv.org/abs/2507.00899}, 
