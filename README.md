@@ -8,7 +8,7 @@ Experiments on toy problems and pretrained TABASCO models for molecular generati
 
 ---
 
-Modifying from TABASCO, original readme:
+Modified from TABASCO. Original readme:
 
 <div align="center">
 
